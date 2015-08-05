@@ -5,6 +5,11 @@ public class ZombieController : MonoBehaviour {
 	public float moveSpeed;
 	private Vector3 moveDirection;
 	public float turnSpeed;
+
+	[SerializeField]
+	private PolygonCollider2D[] colliders;
+	private int currentColliderIndex = 0;
+
 	// Use this for initialization
 	void Start () {
 		moveDirection = Vector3.right;
@@ -30,5 +35,46 @@ public class ZombieController : MonoBehaviour {
 			Quaternion.Slerp( transform.rotation, 
 			                 Quaternion.Euler( 0, 0, targetAngle ), 
 			                 turnSpeed * Time.deltaTime );
+		EnforceBounds();
+	}
+
+	public void SetColliderForSprite( int spriteNum )
+	{
+		colliders[currentColliderIndex].enabled = false;
+		currentColliderIndex = spriteNum;
+		colliders[currentColliderIndex].enabled = true;
+	}
+
+	void OnTriggerEnter2D( Collider2D other )
+	{
+		Debug.Log ("Hit " + other.gameObject);
+	}
+
+	private void EnforceBounds()
+	{
+		// 1
+		Vector3 newPosition = transform.position; 
+		Camera mainCamera = Camera.main;
+		Vector3 cameraPosition = mainCamera.transform.position;
+		
+		// 2
+		float xDist = mainCamera.aspect * mainCamera.orthographicSize; 
+		float xMax = cameraPosition.x + xDist;
+		float xMin = cameraPosition.x - xDist;
+		
+		// 3
+		if ( newPosition.x < xMin || newPosition.x > xMax ) {
+			newPosition.x = Mathf.Clamp( newPosition.x, xMin, xMax );
+			moveDirection.x = -moveDirection.x;
+		}
+		float yMax = mainCamera.orthographicSize;
+		
+		if (newPosition.y < -yMax || newPosition.y > yMax) {
+			newPosition.y = Mathf.Clamp( newPosition.y, -yMax, yMax );
+			moveDirection.y = -moveDirection.y;
+		}
+		
+		// 4
+		transform.position = newPosition;
 	}
 }
