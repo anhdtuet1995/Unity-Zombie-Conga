@@ -46,8 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BackgroundRepeater.cs" />
-     <Compile Include="Assets\CameraController.cs" />
+     <Compile Include="Assets\KittyCreator.cs" />
+     <Compile Include="Assets\Scripts\BackgroundRepeater.cs" />
+     <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CatController.cs" />
      <Compile Include="Assets\Scripts\EnemyController.cs" />
      <Compile Include="Assets\Scripts\ScreenRelativePosition.cs" />
