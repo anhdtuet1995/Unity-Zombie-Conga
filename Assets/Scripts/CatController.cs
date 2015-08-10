@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CatCotroller : MonoBehaviour {
+public class CatController : MonoBehaviour {
 
 	void GrantCatTheSweetReleaseOfDeath()
 	{
