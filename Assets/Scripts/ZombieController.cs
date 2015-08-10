@@ -11,6 +11,9 @@ public class ZombieController : MonoBehaviour {
 	private float timeSpentInvincible;
 	private int lives = 3;
 
+	public AudioClip enemyContactSound;
+	public AudioClip catContactSound;
+
 	[SerializeField]
 	private PolygonCollider2D[] colliders;
 	private int currentColliderIndex = 0;
@@ -73,6 +76,7 @@ public class ZombieController : MonoBehaviour {
 			Transform followTarget = congaLine.Count == 0 ? transform : congaLine[congaLine.Count-1];
 			other.transform.parent.GetComponent<CatController>().JoinConga( followTarget, moveSpeed, turnSpeed );
 			congaLine.Add( other.transform );
+			GetComponent<AudioSource>().PlayOneShot(catContactSound);
 			if (congaLine.Count >= 5) {
 				Application.LoadLevel("WinScene");
 			}
@@ -80,6 +84,7 @@ public class ZombieController : MonoBehaviour {
 		else if(!isInvincible && other.CompareTag("enemy")) {
 			isInvincible = true;
 			timeSpentInvincible = 0;
+			GetComponent<AudioSource>().PlayOneShot(enemyContactSound);
 			for( int i = 0; i < 2 && congaLine.Count > 0; i++ )
 			{
 				int lastIdx = congaLine.Count-1;
