@@ -46,14 +46,15 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\CatUpdater.cs" />
      <Compile Include="Assets\Scripts\BackgroundRepeater.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\CatController.cs" />
+     <Compile Include="Assets\Scripts\CatUpdater.cs" />
      <Compile Include="Assets\Scripts\EnemyController.cs" />
      <Compile Include="Assets\Scripts\KittyCreator.cs" />
      <Compile Include="Assets\Scripts\ScreenRelativePosition.cs" />
      <Compile Include="Assets\Scripts\ZombieController.cs" />
+     <Compile Include="Assets\StartGame.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

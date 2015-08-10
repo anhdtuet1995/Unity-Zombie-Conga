@@ -7,6 +7,10 @@ public class ZombieController : MonoBehaviour {
 	private Vector3 moveDirection;
 	public float turnSpeed;
 	private List<Transform> congaLine = new List<Transform>();
+	private bool isInvincible = false;
+	private float timeSpentInvincible;
+	private int lives = 3;
+
 	[SerializeField]
 	private PolygonCollider2D[] colliders;
 	private int currentColliderIndex = 0;
@@ -37,6 +41,23 @@ public class ZombieController : MonoBehaviour {
 			                 Quaternion.Euler( 0, 0, targetAngle ), 
 			                 turnSpeed * Time.deltaTime );
 		EnforceBounds();
+		//1
+		if (isInvincible)
+		{
+			//2
+			timeSpentInvincible += Time.deltaTime;
+			
+			//3
+			if (timeSpentInvincible < 3f) {
+				float remainder = timeSpentInvincible % .3f;
+				GetComponent<Renderer>().enabled = remainder > .15f; 
+			}
+			//4
+			else {
+				GetComponent<Renderer>().enabled = true;
+				isInvincible = false;
+			}
+		}
 	}
 
 	public void SetColliderForSprite( int spriteNum )
@@ -52,9 +73,24 @@ public class ZombieController : MonoBehaviour {
 			Transform followTarget = congaLine.Count == 0 ? transform : congaLine[congaLine.Count-1];
 			other.transform.parent.GetComponent<CatController>().JoinConga( followTarget, moveSpeed, turnSpeed );
 			congaLine.Add( other.transform );
+			if (congaLine.Count >= 5) {
+				Application.LoadLevel("WinScene");
+			}
 		}
-		else if (other.CompareTag("enemy")) {
-			Debug.Log ("Pardon me, ma'am.");
+		else if(!isInvincible && other.CompareTag("enemy")) {
+			isInvincible = true;
+			timeSpentInvincible = 0;
+			for( int i = 0; i < 2 && congaLine.Count > 0; i++ )
+			{
+				int lastIdx = congaLine.Count-1;
+				Transform cat = congaLine[ lastIdx ];
+				congaLine.RemoveAt(lastIdx);
+				cat.parent.GetComponent<CatController>().ExitConga();
+			}
+			if (--lives <= 0) {
+				Application.LoadLevel("LoseScene");
+
+			}
 		}
 	}
 
